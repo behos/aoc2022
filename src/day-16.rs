@@ -10,11 +10,11 @@ fn main() {
     let input = read_to_string("inputs/day-16.txt").expect("missing input file");
     let mut valves = parse_input(input);
     reduce_valves(&mut valves);
-    let res = release_pressure(&mut valves, &vec![(0, 30)]);
+    let res = release_pressure(&mut valves, &[(0, 30)]);
     println!("Part 1: {}", res);
     let res = release_pressure(
         &mut valves,
-        &vec![(0, 26), (0, 26)],
+        &[(0, 26), (0, 26)],
     );
     println!("Part 2: {}", res);
 }
@@ -41,7 +41,7 @@ type Valves = BTreeMap<usize, Valve>; // this has deterministic ordering
 fn cache_key(valves: &Valves, actors: &[(usize, usize)]) -> u64 {
     let mut hasher = DefaultHasher::new();
     for (k, v) in valves {
-        hasher.write_u8(if v.is_open { 1 } else { 0 });
+        hasher.write_u8(u8::from(v.is_open));
         for time in actors
             .iter()
             .map(|(tunnel, time)| if k == tunnel { time } else { &0 })
@@ -100,7 +100,7 @@ fn parse_valve(input: &str) -> (usize, Valve) {
     let flow_rate = valve_parts
         .nth(2)
         .unwrap()
-        .split("=")
+        .split('=')
         .nth(1)
         .unwrap()
         .parse::<usize>()

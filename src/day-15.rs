@@ -46,7 +46,7 @@ impl Sensor {
 
 fn find_beacon(sensors: &[Sensor], max: i64) -> Beacon {
     for y in 0..=max {
-        let ranges = coverage_at_row(sensors, y as i64);
+        let ranges = coverage_at_row(sensors, y);
         if ranges.len() > 1 {
             return (ranges[0].end() + 1, y)
         }
